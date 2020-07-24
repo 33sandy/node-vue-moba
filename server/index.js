@@ -4,10 +4,14 @@ const app=express();
 
 app.use( require('cors')())     //允许跨域
 app.use(express.json())         //可获取body字段json
+app.use('/uploads',express.static(__dirname+'/uploads')) ;    //静态文件托管
+
+app.set('secret','asfsdgfsdfgdfhgdfhdgh')
 
 // 引用，函数传app
 require('./plungins/db')(app);
 require('./routes/admin')(app);
+
 
 
 app.listen(3000,()=>{

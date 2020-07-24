@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <h1>分类列表</h1>
+    <h1>物品列表</h1>
    <el-table
       :data="tableData"
       style="width: 100%">
@@ -9,22 +9,26 @@
         label="ID"
         width="">
       </el-table-column>
-       <el-table-column
-        prop="parent.name"
-        label="上级分类"
+      
+      <el-table-column
+        prop="name"
+        label="物品名称"
         width="">
       </el-table-column>
       <el-table-column
-        prop="name"
-        label="分类名称"
+        prop="icon"
+        label="物品图标"
         width="">
+        <template slot-scope="scope"> 
+          <img :src="scope.row.icon" alt="" style="height:3rem;">
+        </template>
       </el-table-column>
       <el-table-column
       fixed="right"
       label="操作"
       width="">
       <template slot-scope="scope">
-        <el-button type="primary" @click="$router.push(`/categories/edit/${scope.row._id}`)" size="small">编辑</el-button>
+        <el-button type="primary" @click="$router.push(`/items/edit/${scope.row._id}`)" size="small">编辑</el-button>
         <el-button type="primary" @click="remove(scope.row)" size="small">删除</el-button>
       </template>
     </el-table-column>
@@ -46,7 +50,7 @@ export default {
   },
   methods: {
     async fetch(){
-      const res = await this.$http.get('rest/categories')
+      const res = await this.$http.get('rest/items')
       console.log(res)
       if(res.status==200){
         this.tableData=res.data
@@ -54,12 +58,12 @@ export default {
     },
     async remove(row){
       console.log(row._id)
-      this.$confirm(`是否要删除分类 '${row.name}'`, '提示', {
+      this.$confirm(`是否要删除物品 '${row.name}'`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async() => {
-          const res = await this.$http.delete(`rest/categories/${row._id}`)
+          const res = await this.$http.delete(`rest/items/${row._id}`)
           console.log(res)
           if(res.status==200)
           this.$message({
